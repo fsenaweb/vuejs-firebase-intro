@@ -1,6 +1,6 @@
-# vuejs-firebase
+# Vue.js & Firebase
 
-> A Vue.js project
+> Tutorial inicial, para acesso a base de dados do Vue.js com o Firebase do Google
 
 ## Build Setup
 
