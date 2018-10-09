@@ -6,44 +6,44 @@
     <div id="app" class="container">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Adicionar novo item</h3>
+          <h3 class="panel-title">Add New Books</h3>
         </div>
         <div class="panel-body">
-          <form id="form" class="form-inline" v-on:submit.prevent="addItem">
+          <form id="form" class="form-inline" v-on:submit.prevent="addBook">
             <div class="form-group">
-              <label for="bookTitle">Título:</label>
-              <input type="text" id="bookTitle" class="form-control" v-model="newItem.titulo">
+              <label for="bookTitle">Title:</label>
+              <input type="text" id="bookTitle" class="form-control" v-model="newBook.title">
             </div>
             <div class="form-group">
-              <label for="bookAuthor">Autor:</label>
-              <input type="text" id="bookAuthor" class="form-control" v-model="newItem.autor">
+              <label for="bookAuthor">Author:</label>
+              <input type="text" id="bookAuthor" class="form-control" v-model="newBook.author">
             </div>
             <div class="form-group">
               <label for="bookUrl">Url:</label>
-              <input type="text" id="bookUrl" class="form-control" v-model="newItem.url">
+              <input type="text" id="bookUrl" class="form-control" v-model="newBook.link">
             </div>
-            <input type="submit" class="btn btn-primary" value="Adicionar">
+            <input type="submit" class="btn btn-primary" value="Add Book">
           </form>
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Listagem</h3>
+          <h3 class="panel-title">Book List</h3>
         </div>
         <div class="panel-body">
           <table class="table table-striped">
             <thead>
             <tr>
-              <th>Título</th>
-              <th>Autor</th>
-              <th>Ações</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in itens" :key="item.id">
-              <td><a v-bind:href="item.url">{{item.titulo}}</a></td>
-              <td>{{item.autor}}</td>
-              <td><span class="glyphicon glyphicon-trash" aria-hidden="true" v-on:click="removeItem(item)"></span></td>
+            <tr v-for="book in books" :key="book.id">
+              <td><a v-bind:href="book.url">{{book.title}}</a></td>
+              <td>{{book.author}}</td>
+              <td><span class="glyphicon glyphicon-trash" aria-hidden="true" v-on:click="removeBook(book)"></span></td>
             </tr>
             </tbody>
           </table>
@@ -56,46 +56,44 @@
 import Firebase from 'firebase'
 import toastr from 'toastr'
 let config = {
-  // preencha com as informações vindas do seu banco de dados firebase
-  // acesse firebase.google.com, crie o seu cadastro e monte sua base de dados
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  storageBucket: '',
-  messagingSenderId: ''
+  apiKey: 'AIzaSyDTJ2yTw25kEk0cduNJTZvvXkfTfPRreEU',
+  authDomain: 'vuejs-firebase-62b72.firebaseapp.com',
+  databaseURL: 'https://vuejs-firebase-62b72.firebaseio.com',
+  storageBucket: 'vuejs-firebase-62b72.appspot.com',
+  messagingSenderId: '33182910000'
 }
 
 let app = Firebase.initializeApp(config)
 let db = app.database()
-let bdRef = db.ref('itens')
+let booksRef = db.ref('books')
 
 export default {
   name: 'app',
   firebase: {
-    itens: bdRef
+    books: booksRef
   },
 
   data () {
     return {
-      newItem: {
-        titulo: '',
-        autor: '',
-        url: 'http://'
+      newBook: {
+        title: '',
+        author: '',
+        link: 'http://'
       }
     }
   },
 
   methods: {
-    addItem: function () {
-      bdRef.push(this.newItem)
-      toastr.success('Item inserido com sucesso!')
+    addBook: function () {
+      booksRef.push(this.newBook)
+      toastr.success('Livro inserido com sucesso!')
       this.newBook.title = ''
       this.newBook.author = ''
       this.newBook.link = ''
     },
-    removeItem: function (item) {
-      bdRef.child(item['.key']).remove()
-      toastr.success('Item removido com sucesso!')
+    removeBook: function (book) {
+      booksRef.child(book['.key']).remove()
+      toastr.success('Livro removido com sucesso!')
     }
   }
 }
